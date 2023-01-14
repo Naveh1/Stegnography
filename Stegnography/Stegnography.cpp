@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <string>
 
+#include "ImageHelper.h"
+
 enum options {ENCRYPT, DECRYPT};
 
 
@@ -25,7 +27,16 @@ int getOption()
 
 void encrypt()
 {
-    std::cout << "Encrypting" << std::endl;
+    std::string fileName;
+
+    std::cout << "Encrypting: please enter png image file name: ";
+    std::cin >> fileName;
+
+    auto img = ImageHelper::getImage(fileName);
+    img[0][0] = 0;
+    ImageHelper::writeImage("hidden_" + fileName, img);
+
+    std::cout << "Encryptiong end." << std::endl;
 }
 
 void decrypt()

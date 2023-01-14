@@ -6,10 +6,10 @@
 #include "ParsedImage.hpp"
 
 
-
+/***Helper for image handling***/
 class ImageHelper 
 {
 public:
-	ParsedImage getImage(const std::string& path);
-	void writeImage(const std::string& path, const ParsedImage& img);		//todo
+	static ParsedImage getImage(const std::string& path);
+	static void writeImage(const std::string& path, const ParsedImage& img);		//todo
 };

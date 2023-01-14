@@ -3,20 +3,21 @@
 
 #include <iostream>
 #include <Vector>
+#include <opencv2/opencv.hpp>
 
-struct RgbTuple
+
+/*struct RgbTuple
 {
-	uchar Rbyte;
-	uchar Gbyte;
-	uchar Bbyte;
-};
+	uint8_t Rbyte;
+	uint8_t Gbyte;
+	uint8_t Bbyte;
+};*/
 
-
-
+/*** A wrapper for std::vector<std::vector<cv::Vec3b>*> ***/
 class ParsedImage
 {
 public:
-	ParsedImage(std::vector<std::vector<RgbTuple>*>& parsedImage)
+	ParsedImage(std::vector<std::vector<cv::Vec3b>*>& parsedImage)
 	{
 		_parsedImage = parsedImage;
 	}
@@ -27,11 +28,16 @@ public:
 			delete row;
 	}
 
-	std::vector<RgbTuple>& operator[](const int i)
+	std::vector<cv::Vec3b>& operator[](const int i)
 	{
 		return *(_parsedImage[i]);
 	}
 
+	const std::vector<std::vector<cv::Vec3b>*>& getImage() const
+	{
+		return _parsedImage;
+	}
+
 private:
-	std::vector<std::vector<RgbTuple>*> _parsedImage;
+	std::vector<std::vector<cv::Vec3b>*> _parsedImage;
 };
