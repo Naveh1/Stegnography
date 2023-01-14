@@ -1,20 +1,55 @@
-﻿// Stegnography.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+﻿#include <iostream>
+#include <string>
 
-#include <iostream>
+enum options {ENCRYPT, DECRYPT};
+
+
+int get_option()
+{
+    int option = 0;
+
+
+    std::cout << "Please pick an option: " << std::endl;
+    std::cout << ENCRYPT << " - encrypt" << std::endl;
+    std::cout << DECRYPT << " - decrypt" << std::endl;
+    std::cin >> option;
+
+    if (std::cin.fail()) {
+        std::cout << "Invalid input, please enter an integer." << std::endl;
+        exit(0);
+    }
+
+    return option;
+}
+
+
+void encrypt()
+{
+    std::cout << "Encrypting" << std::endl;
+}
+
+void decrypt()
+{
+    std::cout << "Decrypting" << std::endl;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int option = get_option();
+
+    switch (option)
+    {
+    case ENCRYPT:
+        encrypt();
+        break;
+    case DECRYPT:
+        decrypt();
+        break;
+    default:
+        std::cout << "Invalid option." << std::endl;
+        exit(0);
+    }
+
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
