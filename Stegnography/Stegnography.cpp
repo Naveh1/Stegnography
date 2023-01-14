@@ -4,7 +4,7 @@
 enum options {ENCRYPT, DECRYPT};
 
 
-int get_option()
+int getOption()
 {
     int option = 0;
 
@@ -35,7 +35,7 @@ void decrypt()
 
 int main()
 {
-    int option = get_option();
+    int option = getOption();
 
     switch (option)
     {
