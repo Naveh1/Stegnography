@@ -33,9 +33,14 @@ public:
 		return *(_parsedImage[i]);
 	}
 
-	const std::vector<std::vector<cv::Vec3b>*>& getImage() const
+	const std::vector<std::vector<cv::Vec3b>>& getImage() const
 	{
-		return _parsedImage;
+		std::vector<std::vector<cv::Vec3b>> res;
+
+		for (auto& i : _parsedImage)
+			res.emplace_back(*i);
+
+		return res;
 	}
 
 private:
