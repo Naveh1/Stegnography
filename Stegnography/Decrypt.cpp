@@ -1,6 +1,12 @@
 #include "Decrypt.h"
+#include "Helper.hpp"
+#include "ParsedImage.hpp"
 
-std::string Decrypt::decrypt(const ParsedImage& img, const int byte = 0)
+std::vector<unsigned char> Decrypt::decrypt(const ParsedImage& img, const int byte = 0)
 {
-    return std::string();
+    std::vector<bool> bitArray;
+
+    //TODO: setup bitArray
+
+    return Helper::bits_to_bytes(bitArray);
 }

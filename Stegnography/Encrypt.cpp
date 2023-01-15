@@ -1,5 +1,6 @@
 #include "Encrypt.h"
 #include "ParsedImage.hpp"
+#include "Helper.hpp"
 
 
 /*

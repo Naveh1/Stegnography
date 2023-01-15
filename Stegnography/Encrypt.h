@@ -3,7 +3,6 @@
 class ParsedImage;
 
 #define RGB_SIZE 3
-#define BITS_IN_BYTE 8
 
 class Encrypt
 {
