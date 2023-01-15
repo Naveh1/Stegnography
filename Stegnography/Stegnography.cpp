@@ -2,7 +2,7 @@
 #include <string>
 
 #include "ImageHelper.h"
-
+#include "Encrypt.h"
 enum options {ENCRYPT, DECRYPT};
 
 
@@ -27,21 +27,26 @@ int getOption()
 
 void encrypt()
 {
-    std::string fileName;
+    std::string fileName, msg;
     std::string end = ".png";
 
     std::cout << "Encrypting: please enter png image file name: ";
     std::cin >> fileName;
 
-    if (fileName.substr(fileName.find(".")) != end)
+    if (fileName.find(".") == std::string::npos || fileName.substr(fileName.size() - end.size()) != end)
     {
         std::cout << "File isn't png file" << std::endl;
+        return;
     }
 
     auto img = ImageHelper::getImage(fileName);
+
+    std::cout << "Enter message to hide: ";
+    std::cin >> msg;
+
+    Encrypt::encrypt(img, msg);
     
-    img[0][0] = 0;
-    ImageHelper::writeImage(fileName.substr(0, fileName.size() - end.size()) + "_hidden" + end, img);
+    ImageHelper::writeImage(fileName.substr(0, fileName.size() - end.size()) + "_hidden" + end, img);       //Adding _hidden in the end of the file, before .png
 
     std::cout << "Encryptiong end." << std::endl;
 }
@@ -53,7 +58,7 @@ void decrypt()
 
 int main()
 {
-    int option = getOption();
+    int option = getOption();//0 FOR ENCRPYT 1 FOR DECRYPT
 
     switch (option)
     {

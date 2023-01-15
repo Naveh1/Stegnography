@@ -167,10 +167,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Encrypt.cpp" />
     <ClCompile Include="ImageHelper.cpp" />
     <ClCompile Include="Stegnography.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Encrypt.h" />
     <ClInclude Include="ImageHelper.h" />
     <ClInclude Include="ParsedImage.hpp" />
   </ItemGroup>
