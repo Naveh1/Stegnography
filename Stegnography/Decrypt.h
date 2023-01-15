@@ -9,5 +9,5 @@ class ParsedImage;
 class Decrypt
 {
 public:
-	static std::vector<unsigned char> decrypt(const ParsedImage& img, const int byte = 0);
+	static std::vector<unsigned char> decrypt(ParsedImage& img, const int byte = 0);
 };
