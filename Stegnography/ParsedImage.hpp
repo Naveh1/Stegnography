@@ -36,6 +36,16 @@ public:
 		return res;
 	}
 
+	int getRows() const
+	{
+		return _parsedImage.size();
+	}
+
+	int getCols() const
+	{
+		return _parsedImage[0]->size();
+	}
+
 private:
 	std::vector<std::vector<cv::Vec3b>*> _parsedImage;
 };
