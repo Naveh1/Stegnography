@@ -2,6 +2,12 @@
 #include "ParsedImage.hpp"
 
 
+/*
+* This function adds the message to the binary of the file
+* Img: the parsed image in a more comfertable format
+* msg: the message to hide in the picture
+* hideByte: the bit index which we hide in the message, 0 is for the least sifinificent bit
+*/
 void Encrypt::encrypt(ParsedImage& img, const std::string& msg, const int hideByte)
 {
 	int row = 0, col = 0;
@@ -27,10 +33,10 @@ void Encrypt::encrypt(ParsedImage& img, const std::string& msg, const int hideBy
 		msgByte = msg[i / BITS_IN_BYTE];
 		byte = i % BITS_IN_BYTE;
 
-		//Get the hideByte's byet of msgByte - x = (msgByte >> hideByte) & 1
-		//Clearing byte's byte of imgByte - y =  imgByte &= ~(1 << byte);
-		//Setting the byte's byte of imgByte to x - imgByte = (y | (x << byte))
+		//Get the byte's most significent bit of msgByte - x = (msgByte >> (BITS_IN_BYTE - byte - 1)) & 1
+		//Clearing hideByte's byte of imgByte - y =  imgByte &= ~(1 << hideByte);
+		//Setting the hideByte's byte of imgByte to x - imgByte = (y | (x << hideByte))
 
-		img[row][col][tmp] = (imgByte & ~(1 << byte)) | (((msgByte >> hideByte) & 1) << byte);
+		img[row][col][tmp] = (imgByte & ~(1 << hideByte)) | (((msgByte >> (BITS_IN_BYTE - byte - 1)) & 1) << hideByte);
 	}
 }

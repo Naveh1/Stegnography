@@ -4,7 +4,7 @@
 
 ParsedImage ImageHelper::getImage(const std::string& path)
 {
-    cv::Mat image = cv::imread(path, cv::IMREAD_COLOR);
+    cv::Mat image = cv::imread(path, cv::IMREAD_COLOR | cv::IMREAD_UNCHANGED);
     std::vector<std::vector<cv::Vec3b>*> parsedImage;
 
     if (image.empty()) {
@@ -46,7 +46,7 @@ void ImageHelper::writeImage(const std::string& path, const ParsedImage& img)
         }
     }
 
-    if (!cv::imwrite(path, image))
+    if (!cv::imwrite(path, image, { cv::IMWRITE_PNG_COMPRESSION, 0 }))
     {
         std::cerr << "Error writing file " << path << std::endl;
     }
