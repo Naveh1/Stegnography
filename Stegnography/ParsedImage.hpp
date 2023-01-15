@@ -6,13 +6,6 @@
 #include <opencv2/opencv.hpp>
 
 
-/*struct RgbTuple
-{
-	uint8_t Rbyte;
-	uint8_t Gbyte;
-	uint8_t Bbyte;
-};*/
-
 /*** A wrapper for std::vector<std::vector<cv::Vec3b>*> ***/
 class ParsedImage
 {
