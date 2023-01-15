@@ -2,7 +2,7 @@
 #include "Helper.hpp"
 #include "ParsedImage.hpp"
 
-std::vector<unsigned char> Decrypt::decrypt(const ParsedImage& img, const int byte = 0)
+std::vector<unsigned char> Decrypt::decrypt(const ParsedImage& img, const int byte)
 {
     std::vector<bool> bitArray;
 
