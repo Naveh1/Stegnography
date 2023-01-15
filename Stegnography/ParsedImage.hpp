@@ -33,7 +33,7 @@ public:
 		return *(_parsedImage[i]);
 	}
 
-	const std::vector<std::vector<cv::Vec3b>>& getImage() const
+	const std::vector<std::vector<cv::Vec3b>> getImage() const
 	{
 		std::vector<std::vector<cv::Vec3b>> res;
 

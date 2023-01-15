@@ -28,13 +28,20 @@ int getOption()
 void encrypt()
 {
     std::string fileName;
+    std::string end = ".png";
 
     std::cout << "Encrypting: please enter png image file name: ";
     std::cin >> fileName;
 
+    if (fileName.substr(fileName.find(".")) != end)
+    {
+        std::cout << "File isn't png file" << std::endl;
+    }
+
     auto img = ImageHelper::getImage(fileName);
+    
     img[0][0] = 0;
-    ImageHelper::writeImage("hidden_" + fileName, img);
+    ImageHelper::writeImage(fileName.substr(0, fileName.size() - end.size()) + "_hidden" + end, img);
 
     std::cout << "Encryptiong end." << std::endl;
 }
