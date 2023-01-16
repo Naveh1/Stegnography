@@ -4,6 +4,7 @@
 #include "ImageHelper.h"
 #include "Encrypt.h"
 #include "Decrypt.h"
+#include "Helper.hpp"
 
 enum options {ENCRYPT, DECRYPT, EXIT};
 
@@ -83,7 +84,7 @@ void decrypt()
 
     std::cout << "Secret message: ";
 
-    std::cout << msg << std::endl;
+    std::cout << Helper::convertReadable(msg) << std::endl;
 
     std::cout << "Decryption end." << std::endl << std::endl;
 }

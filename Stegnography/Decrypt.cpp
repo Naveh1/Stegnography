@@ -3,8 +3,6 @@
 #include "Helper.hpp"
 #include "ParsedImage.hpp"
 
-#include <fstream>
-#include <string>
 
 /*
 * A function to decrypt hidden message from image
@@ -37,13 +35,13 @@ std::string Decrypt::findMessage(ParsedImage& img)
     std::vector<unsigned char> curr;
     int score = -1, tmpScore = 0;
 
-    std::set<std::string> wordList = loadWordList();
+    std::set<std::string> wordList = Helper::loadWordList();
 
     for (int i = 0; i < BITS_CHECKED; i++)
     {
         curr = Helper::bits_to_bytes(Decrypt::decrypt(img, i));
 
-        if ((tmpScore = gradeMessage(curr, wordList)) > score)
+        if ((tmpScore = Helper::gradeMessage(curr, wordList)) > score)
         {
             score = tmpScore;
             best = std::string(curr.begin(), curr.end());
@@ -53,53 +51,3 @@ std::string Decrypt::findMessage(ParsedImage& img)
     return best;
 }
 
-bool Decrypt::isReadable(const unsigned char ch)
-{
-    return ch <= MAX_READABLE;
-}
-
-int Decrypt::gradeMessage(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList)
-{
-    unsigned int grade = 0;
-    std::string word, pWord;
-    
-    std::stringstream ss;
-    ss.str(std::string(msg.begin(), msg.end()));
-
-    while (!ss.eof())
-    {
-        word = "";
-        ss >> pWord;
-        if (pWord.empty())
-            continue;
-
-        for (const char ch : pWord)
-        {
-            if (isReadable(ch))
-                word += ch;
-            else
-                break;
-        }
-        
-        if (word.size() > 0 && word.find_first_not_of(PUNCTUATION) != std::string::npos 
-            && wordList.find(std::string(word, word.find_first_not_of(PUNCTUATION), word.find_last_not_of(PUNCTUATION))) != wordList.end())
-            grade += word.size() * word.size();     //Grade is Proportional to the word size
-    }
-
-    return grade;
-}
-
-std::set<std::string> Decrypt::loadWordList()
-{
-    std::set<std::string> wordList;
-    if (wordList.size() == 0)
-    {
-        std::ifstream words("words.txt");
-        std::string curr;
-
-        while (std::getline(words, curr))
-            wordList.insert(curr);
-    }
-
-    return wordList;
-}
