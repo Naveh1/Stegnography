@@ -81,8 +81,7 @@ int Decrypt::gradeMessage(const std::vector<unsigned char>& msg, const std::set<
                 break;
         }
         
-        if (word.size() > 0 && word.find_first_not_of(PUNCTUATION) != std::string::npos 
-            && wordList.find(std::string(word, word.find_first_not_of(PUNCTUATION), word.find_last_not_of(PUNCTUATION))) != wordList.end())
+        if (word.size() > 0 && word.find_first_not_of(PUNCTUATION) != std::string::npos && wordList.find(std::string(word, word.find_first_not_of(PUNCTUATION), word.find_last_not_of(PUNCTUATION))) != wordList.end())
             grade += word.size() * word.size();     //Grade is Proportional to the word size
     }
 

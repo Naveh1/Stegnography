@@ -18,8 +18,9 @@ public:
 
 private:
 	static bool isReadable(const unsigned char ch);
-	static int gradeMessage(const std::vector<unsigned char>& msg);
-	static void loadWordList();
+	static int gradeMessage(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList);
+	static std::set<std::string> loadWordList();
 
-	static std::set<std::string> wordList;
+	//static std::set<std::string> wordList;
 };
+
