@@ -18,8 +18,10 @@ public:
         for (int i = 0; i < bits.size() / BITS_IN_BYTE; i++)
         {
             currByte = 0;
-            for (int j = 0; j < bits.size() % BITS_IN_BYTE; j++)
-                currByte |= bits[i + j] << j;                       //Building curr byte
+            for (int j = 0; j < BITS_IN_BYTE; j++)
+            {
+                currByte |= bits[i * BITS_IN_BYTE + j] << (BITS_IN_BYTE - j - 1);                       //Building curr byte
+            }
 
             msg.emplace_back(currByte);
         }
@@ -36,6 +38,9 @@ public:
             for (int j = 0; j < BITS_IN_BYTE; j++)
                 bits.emplace_back((msg[i] >> (BITS_IN_BYTE - j - 1)) & 1);      //Getting the j'th most significent byte of the i'th char of msg
         }
+
+        /*for (int i = 0; i < BITS_IN_BYTE; i++)
+            bits.emplace_back(0);                   //Adding null terminator byte in the end of the message*/
 
         return bits;
     }

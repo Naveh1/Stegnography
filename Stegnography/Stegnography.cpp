@@ -3,6 +3,8 @@
 
 #include "ImageHelper.h"
 #include "Encrypt.h"
+#include "Decrypt.h"
+
 enum options {ENCRYPT, DECRYPT};
 
 
@@ -53,7 +55,29 @@ void encrypt()
 
 void decrypt()
 {
-    std::cout << "Decrypting" << std::endl;
+    std::string fileName;
+    std::string end = "_hidden.png";
+
+    std::cout << "Decrypting: please enter file name: ";
+    std::cin >> fileName;
+
+    //if (fileName.find(".") == std::string::npos || fileName.substr(fileName.size() - end.size()) != end)
+    //{
+    //    std::cout << "File isn't hidden png file" << std::endl;
+    //    return;
+    //}
+
+    auto img = ImageHelper::getImage(fileName);
+
+    auto msg = Decrypt::decrypt(img);
+
+    std::cout << "Secret message: ";
+
+    for (auto i : msg)
+        std::cout << i;
+    std::cout << std::endl;
+
+    std::cout << "Decryption end." << std::endl;
 }
 
 int main()

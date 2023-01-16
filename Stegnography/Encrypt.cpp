@@ -18,7 +18,7 @@ void Encrypt::encrypt(ParsedImage& img, const std::string& msg, const int hideBy
 
 	auto bits = Helper::msg_to_bits(msg);
 
-	for (int i = 0; i < msg.size() * BITS_IN_BYTE; i++)
+	for (int i = 0; i < bits.size(); i++)
 	{
 		tmp = i / RGB_SIZE;
 		row = tmp / img.getCols();
@@ -41,6 +41,6 @@ void Encrypt::encrypt(ParsedImage& img, const std::string& msg, const int hideBy
 		//Setting the hideByte's byte of imgByte to x - imgByte = (y | (x << hideByte))
 
 		//img[row][col][tmp] = (imgByte & ~(1 << hideByte)) | (((msgByte >> (BITS_IN_BYTE - byte - 1)) & 1) << hideByte);
-		img[row][col][tmp] = (imgByte & ~(1 << hideByte)) | (bits[i] << hideByte);
+		img[row][col][tmp] = (imgByte & ~(1 << hideByte)) | (bits[i] << hideByte);		// imgByteWithoutBit | MessageByteWithOnlyBit
 	}
 }

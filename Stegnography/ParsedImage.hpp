@@ -10,7 +10,7 @@
 class ParsedImage
 {
 public:
-	ParsedImage(std::vector<std::vector<cv::Vec3b>*>& parsedImage)
+	ParsedImage(std::vector<std::vector<cv::Vec3b>*> parsedImage)
 	{
 		_parsedImage = parsedImage;
 	}
