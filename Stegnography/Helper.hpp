@@ -9,13 +9,13 @@
 class Helper
 {
 public:
-	static std::vector<unsigned char> bits_to_bytes(const std::vector<bool>& bits)
+	static std::vector<unsigned char> bits_to_bytes(const std::vector<bool>& bits, const int offset = 0)
 	{
         unsigned char currByte = 0;
         std::vector<unsigned char> msg;
 
         //Converting the bits into bytes
-        for (int i = 0; i < bits.size() / BITS_IN_BYTE; i++)
+        for (int i = offset; i < bits.size() / BITS_IN_BYTE; i++)
         {
             currByte = 0;
             for (int j = 0; j < BITS_IN_BYTE; j++)

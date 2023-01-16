@@ -4,6 +4,10 @@ class ParsedImage;
 
 #define RGB_SIZE 3
 
+
+/*
+* A class to encrypt a message into a wrapped img
+*/
 class Encrypt
 {
 public:

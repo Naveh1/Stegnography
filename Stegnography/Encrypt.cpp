@@ -5,6 +5,7 @@
 
 /*
 * This function adds the message to the binary of the file
+* The function converts the message to bits, then iterates over the image and set's every hideByte's bit of every byte to the correct bit in the message
 * Img: the parsed image in a more comfertable format
 * msg: the message to hide in the picture
 * hideByte: the bit index which we hide in the message, 0 is for the least sifinificent bit

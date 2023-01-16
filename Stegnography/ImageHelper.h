@@ -11,5 +11,5 @@ class ImageHelper
 {
 public:
 	static ParsedImage getImage(const std::string& path);
-	static void writeImage(const std::string& path, const ParsedImage& img);		//todo
+	static void writeImage(const std::string& path, const ParsedImage& img);
 };

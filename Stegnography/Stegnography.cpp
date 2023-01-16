@@ -27,7 +27,11 @@ int getOption()
     return option;
 }
 
-
+/*
+* This function encrypts given png image with given messsage
+* The function first asks for the image and the message, then wrapping the image.
+* After that, the function will encrypt the secret message in the image, and write it to a file, adding _hidden to the file name
+*/
 void encrypt()
 {
     std::string fileName, msg;
@@ -36,19 +40,23 @@ void encrypt()
     std::cout << "Encrypting: please enter png image file name: ";
     std::cin >> fileName;
 
-    if (fileName.find(".") == std::string::npos || fileName.substr(fileName.size() - end.size()) != end)
+    if (fileName.find(".") == std::string::npos || fileName.substr(fileName.size() - end.size()) != end)    //Making sure the file is png
     {
         std::cout << "File isn't png file" << std::endl;
         return;
     }
 
+    //Wrapping the image
     auto img = ImageHelper::getImage(fileName);
 
     std::cout << "Enter message to hide: ";
     std::cin >> msg;
 
+    //Encrypting the message in the picture
     Encrypt::encrypt(img, msg);
     
+
+    //Writing the image
     ImageHelper::writeImage(fileName.substr(0, fileName.size() - end.size()) + "_hidden" + end, img);       //Adding _hidden in the end of the file, before .png
 
     std::cout << "Encryptiong end." << std::endl << std::endl;
@@ -63,7 +71,7 @@ void decrypt()
     std::cout << "Decrypting: please enter file name: ";
     std::cin >> fileName;
 
-    if (fileName.find(".") == std::string::npos || fileName.substr(fileName.size() - end.size()) != end)
+    if (fileName.find(".") == std::string::npos || fileName.substr(fileName.size() - end.size()) != end)        //Making sure the file is hidden png
     {
         std::cout << "File isn't hidden png file" << std::endl;
         return;
@@ -71,13 +79,11 @@ void decrypt()
 
     auto img = ImageHelper::getImage(fileName);
 
-    auto msg = Decrypt::decrypt(img);
+    auto msg = Decrypt::findMessage(img);
 
     std::cout << "Secret message: ";
 
-    for (auto i : msg)
-        std::cout << i;
-    std::cout << std::endl;
+    std::cout << msg << std::endl;
 
     std::cout << "Decryption end." << std::endl << std::endl;
 }
