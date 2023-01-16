@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <Vector>
+#include <Set>
 
 #define BITS_CHECKED 3
+#define PUNCTUATION ".,:;!?\"\'"
+#define MAX_READABLE 127
 
 class ParsedImage;
 
@@ -14,5 +17,9 @@ public:
 	static std::string findMessage(ParsedImage& img);
 
 private:
+	static bool isReadable(const unsigned char ch);
 	static int gradeMessage(const std::vector<unsigned char>& msg);
+	static void loadWordList();
+
+	static std::set<std::string> wordList;
 };

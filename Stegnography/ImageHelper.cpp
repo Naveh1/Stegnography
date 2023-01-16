@@ -15,6 +15,8 @@ ParsedImage ImageHelper::getImage(const std::string& path)
     cv::Mat image = cv::imread(path, cv::IMREAD_COLOR | cv::IMREAD_UNCHANGED);
     std::vector<std::vector<cv::Vec3b>*> parsedImage;
 
+    cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
+
     if (image.empty()) {
         std::cerr << "Error: Could not open or find the image" << std::endl;
         exit(0);
@@ -63,6 +65,9 @@ void ImageHelper::writeImage(const std::string& path, const ParsedImage& img)
             image.at<cv::Vec3b>(i, j) = data[i][j];
         }
     }
+
+    cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
+
 
     //Saving the image to file
     if (!cv::imwrite(path, image, { cv::IMWRITE_PNG_COMPRESSION, 0 }))

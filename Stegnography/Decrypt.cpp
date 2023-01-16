@@ -3,6 +3,8 @@
 #include "Helper.hpp"
 #include "ParsedImage.hpp"
 
+#include <fstream>
+#include <string>
 /*
 * A function to decrypt hidden message from image
 * The function iterates over the image and saves the byte's bit of every byte of the image
@@ -48,7 +50,43 @@ std::string Decrypt::findMessage(ParsedImage& img)
     return best;
 }
 
+bool Decrypt::isReadable(const unsigned char ch)
+{
+    return ch <= MAX_READABLE;
+}
+
 int Decrypt::gradeMessage(const std::vector<unsigned char>& msg)
 {
-    return 0;
+    unsigned int grade = 0;
+    std::string word;
+    
+
+    loadWordList();
+
+    std::stringstream ss;
+    ss.str(std::string(msg.begin(), msg.end()));
+
+    while (!ss.eof())
+    {
+        ss >> word;
+        if (word.empty())
+            continue;
+
+        if (wordList.find(std::string(word, word.find_first_not_of(PUNCTUATION), word.find_last_not_of(PUNCTUATION))) != wordList.end())
+            grade += word.size() * word.size();     //Grade is Proportional to the word size
+    }
+
+    return grade;
+}
+
+void Decrypt::loadWordList()
+{
+    if (wordList.size() == 0)
+    {
+        std::ifstream words("words.txt");
+        std::string curr;
+
+        while (std::getline(words, curr))
+            wordList.insert(curr);
+    }
 }
