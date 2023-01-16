@@ -57,8 +57,7 @@ void encrypt()
 void decrypt()
 {
     std::string fileName;
-    //std::string end = "_hidden.png";
-    std::string end = ".png";
+    std::string end = "_hidden.png";
 
     std::cout << "Decrypting: please enter file name: ";
     std::cin >> fileName;
