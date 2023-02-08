@@ -32,6 +32,7 @@ std::vector<bool> Decrypt::decrypt(ParsedImage &img, const int byte)
 std::string Decrypt::findMessage(ParsedImage& img)
 {
     std::string best;
+    std::vector<bool> noOffset, tmp;
     std::vector<unsigned char> curr;
     int score = -1, tmpScore = 0;
 
@@ -39,12 +40,18 @@ std::string Decrypt::findMessage(ParsedImage& img)
 
     for (int i = 0; i < BITS_CHECKED; i++)
     {
-        curr = Helper::bits_to_bytes(Decrypt::decrypt(img, i));
-
-        if ((tmpScore = Helper::gradeMessage(curr, wordList)) > score)
+        noOffset = Decrypt::decrypt(img, i);
+        for (int i = 0; i < BITS_IN_BYTE; i++)
         {
-            score = tmpScore;
-            best = std::string(curr.begin(), curr.end());
+            tmp = noOffset;
+            tmp.erase(tmp.begin(), tmp.begin() + i);
+            curr = Helper::bits_to_bytes(tmp);
+
+            if ((tmpScore = Helper::gradeMessage(curr, wordList)) > score)
+            {
+                score = tmpScore;
+                best = std::string(curr.begin(), curr.end());
+            }
         }
     }
 

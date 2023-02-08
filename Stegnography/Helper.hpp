@@ -9,7 +9,8 @@
 
 
 #define BITS_IN_BYTE 8
-#define PUNCTUATION ".,:;!?\"\'"
+#define PUNCTUATION "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define ALLOWED_PUNCT ".,!? "
 #define MAX_READABLE 127
 
 class Helper
@@ -61,7 +62,7 @@ public:
     static int gradeMessage(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList)
     {
         unsigned int grade = 0;
-        std::string word, pWord;
+        std::string word, pWord, tmp;
 
         std::stringstream ss;
         ss.str(std::string(msg.begin(), msg.end()));
@@ -81,9 +82,12 @@ public:
                     break;
             }
 
-            if (word.size() > 0 && word.find_first_not_of(PUNCTUATION) != std::string::npos
-                && wordList.find(std::string(word, word.find_first_not_of(PUNCTUATION), word.find_last_not_of(PUNCTUATION))) != wordList.end())
-                grade += word.size() * word.size();     //Grade is Proportional to the word size
+            if (word.size() > 0 && word.find_first_of(PUNCTUATION) != std::string::npos
+                && wordList.find(tmp = std::string(word, word.find_first_of(PUNCTUATION), word.find_last_of(PUNCTUATION))) != wordList.end())
+            {
+                grade += tmp.size() * tmp.size();     //Grade is proportional to the word size
+                std::cout << tmp << std::endl;
+            }
         }
 
         return grade;
