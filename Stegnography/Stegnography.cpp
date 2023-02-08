@@ -82,9 +82,10 @@ void decrypt()
 
     auto msg = Decrypt::findMessage(img);
 
-    std::cout << "Secret message: ";
+    std::cout << "Secret message: " << msg;
 
-    std::cout << Helper::convertReadable(msg) << std::endl;
+
+    //std::cout << Helper::convertReadable(msg) << std::endl;
 
     std::cout << "Decryption end." << std::endl << std::endl;
 }
@@ -110,6 +111,8 @@ int main()
         default:
             std::cout << "Invalid option." << std::endl;
         }
+
+        std::cin.get();
     }
 
     return 0;

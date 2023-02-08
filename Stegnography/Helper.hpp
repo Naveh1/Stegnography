@@ -61,6 +61,9 @@ public:
 
     static int gradeMessage(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList)
     {
+        return getLongestSentence(msg, wordList).size();
+
+        //Ignore the rest
         unsigned int grade = 0;
         std::string word, pWord, tmp;
 
@@ -91,6 +94,53 @@ public:
         }
 
         return grade;
+    }
+
+
+    static std::string getLongestSentence(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList)
+    {
+        int words = 0, curr = 0;
+        std::string longest, currWord;
+        std::string word;
+        std::string punct = ALLOWED_PUNCT;
+
+        std::stringstream ss;
+
+        for (const unsigned char& a : msg)
+        {
+            if (isalpha(a))
+                ss << tolower(a);
+            else if (punct.find(a) != std::string::npos)
+                ss << a;
+            else
+                ss << '_';
+        }
+
+
+        while (ss >> word) 
+        {
+            //Removing leading junk incase its the first word in the sentence
+            while (word.size() > 0 && !isalpha(word[0]))
+            {
+                curr = 0;
+                currWord = "";
+                word = word.substr(1);
+            }
+
+            if (wordList.find(word.substr(0, word.find_first_of(punct))) != wordList.end())
+            {
+                curr++;
+                currWord += " " + word;
+            }
+
+            if (curr > words)
+            {
+                words = curr;
+                longest = currWord;
+            }
+        }
+
+        return longest;
     }
 
     static std::set<std::string> loadWordList()

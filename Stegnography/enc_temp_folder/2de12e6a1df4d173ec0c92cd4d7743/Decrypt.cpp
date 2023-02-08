@@ -53,8 +53,6 @@ std::string Decrypt::findMessage(ParsedImage& img)
                 //best = std::string(curr.begin(), curr.end());
                 res = curr;
             }
-
-            std::cout << "Debug - iteration has ended." << std::endl;
         }
     }
 
