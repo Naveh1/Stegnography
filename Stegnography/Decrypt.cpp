@@ -29,6 +29,7 @@ std::vector<bool> Decrypt::decrypt(ParsedImage &img, const int byte)
     return bitArray;
 }
 
+/*
 std::string Decrypt::findMessage(ParsedImage& img)
 {
     std::string best;
@@ -61,5 +62,41 @@ std::string Decrypt::findMessage(ParsedImage& img)
     }
 
     return Helper::getLongestSentence(res, wordList);
+}*/
+
+
+
+std::string Decrypt::findMessage(ParsedImage& img)
+{
+    std::string best, curr;
+    std::vector<bool> tmp;
+    std::vector<unsigned char> res;
+    std::vector<std::vector<bool>> noOffset;
+
+    std::set<std::string> wordList = Helper::loadWordList();
+
+    for (int i = 0; i < BITS_CHECKED; i++)
+        noOffset.emplace_back(Decrypt::decrypt(img, i));
+    
+    std::cout << "Beginning decryption..." << std::endl;
+
+    for (int i = 0; i < BITS_IN_BYTE; i++)
+    {
+        std::map<int, std::string> words;
+        for (int j = 0; j < BITS_CHECKED; j++)
+        {
+            tmp = noOffset[j];
+            Helper::findAllWords(Helper::bits_to_bytes(tmp), wordList, words);
+            tmp.erase(tmp.begin());
+        }
+        
+        curr = Helper::getLongestSentence(words);
+        if (curr.size() > best.size())
+            best = curr;
+
+        std::cout << "Ended iteration " << i << std::endl;
+    }
+
+    return best;
 }
 

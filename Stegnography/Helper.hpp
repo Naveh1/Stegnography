@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <Set>
+#include <Map>
 #include <opencv2/opencv.hpp>
 
 
@@ -180,6 +181,93 @@ public:
         }
 
         return stripBeginningOfString(stripEndOfString(longest, "" + ILLEGAL_CHAR), "" + ILLEGAL_CHAR);
+    }
+
+    static std::string getLongestSentence(const std::map<int, std::string>& words)
+    {
+        std::string longestWord, currWord;
+        std::string temp;
+        int next = 0;
+
+        for (auto& word : words)
+        {
+            currWord = "";
+
+            if (word.second == " ")
+                continue;
+
+            next = word.first;
+
+            while (words.count(next)) 
+            {
+                temp = words.at(next);
+                currWord += temp;
+                next += temp.size();
+
+                if (words.count(next) && words.at(next++) != " ")
+                    break;
+                currWord += ' ';
+            }
+
+            if (currWord.size() > longestWord.size())
+                longestWord = currWord;
+        }
+
+        return longestWord;
+    }
+
+    static std::map<int, std::string> findAllWords(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList, std::map<int, std::string>& words)
+    {
+        int i = 0, j = 0;
+        int curr = 0;
+        char tmp = 0;
+        std::string longest, currWord, carry;
+        std::string word;
+        std::string punct = ALLOWED_PUNCT;
+
+        std::stringstream ss;
+        const char ILLEGAL_CHAR = '\n';
+
+
+        for (const unsigned char& a : msg)
+        {
+            if (isalpha(a))
+                ss << (char)tolower(a);
+            else if (punct.find(a) != std::string::npos)
+                ss << a;
+            else
+                ss << ILLEGAL_CHAR;
+        }
+
+
+        while (!ss.eof())
+        {
+            j = i;
+            word = "";
+
+            while (!ss.eof() && (tmp = ss.get()) != ILLEGAL_CHAR)
+            {
+                if (tmp == ' ') {
+                    words[i] = (words.count(i) && words.at(i).size() > 1) ? words.at(i) : " ";
+                    i++;
+                    break;
+                }
+                else
+                    word += tmp;
+                i++;
+            }
+
+            while (stripEndOfWord(word, punct).size() > 0 && wordList.find(stripEndOfWord(word, punct)) == wordList.end())
+            {
+                j++;
+                word = word.substr(1);
+            }
+
+            if (stripEndOfWord(word, punct).size() > 0)
+                words[j] = (words.count(j) && words.at(j).size() > word.size()) ? words.at(j) : word;
+        }
+
+        return words;
     }
 
     static std::set<std::string> loadWordList()
