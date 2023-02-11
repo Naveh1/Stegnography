@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ImageHelper.h"
 #include <opencv2/opencv.hpp>
 

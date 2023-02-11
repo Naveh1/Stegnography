@@ -41,17 +41,19 @@ std::string Decrypt::findMessage(ParsedImage& img)
     for (int i = 0; i < BITS_CHECKED; i++)
     {
         noOffset = Decrypt::decrypt(img, i);
-        for (int i = 0; i < BITS_IN_BYTE; i++)
+        for (int j = 0; j < BITS_IN_BYTE; j++)
         {
             tmp = noOffset;
-            tmp.erase(tmp.begin(), tmp.begin() + i);
+            tmp.erase(tmp.begin(), tmp.begin() + j);
             curr = Helper::bits_to_bytes(tmp);
 
             if ((tmpScore = Helper::gradeMessage(curr, wordList)) > score)
             {
                 score = tmpScore;
                 //best = std::string(curr.begin(), curr.end());
-                res = curr;
+                res = std::vector<unsigned char>(curr.begin(), curr.end());
+
+                std::cout << i * BITS_IN_BYTE + j << ": " << Helper::getLongestSentence(curr, wordList) << std::endl;
             }
 
             std::cout << "Debug - iteration has ended." << std::endl;

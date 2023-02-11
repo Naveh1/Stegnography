@@ -51,8 +51,9 @@ void encrypt()
     auto img = ImageHelper::getImage(fileName);
 
     std::cout << "Enter message to hide: ";
-    std::cin >> msg;
-
+    //std::cin >> msg;
+    std::cin.get();
+    std::getline(std::cin, msg);
     //Encrypting the message in the picture
     Encrypt::encrypt(img, msg);
     
@@ -82,7 +83,7 @@ void decrypt()
 
     auto msg = Decrypt::findMessage(img);
 
-    std::cout << "Secret message: " << msg;
+    std::cout << "Secret message: " << msg << std::endl;
 
 
     //std::cout << Helper::convertReadable(msg) << std::endl;

@@ -105,32 +105,65 @@ public:
         std::string punct = ALLOWED_PUNCT;
 
         std::stringstream ss;
+        const char ILLEGAL_CHAR = '\n';
+
+
 
         for (const unsigned char& a : msg)
         {
             if (isalpha(a))
-                ss << tolower(a);
+                ss << (char)tolower(a);
             else if (punct.find(a) != std::string::npos)
                 ss << a;
             else
-                ss << '_';
+                ss << ILLEGAL_CHAR;
         }
 
 
         while (ss >> word) 
         {
             //Removing leading junk incase its the first word in the sentence
-            while (word.size() > 0 && !isalpha(word[0]))
+            /*while (word.size() > 0 && !isalpha(word[0]))
             {
                 curr = 0;
                 currWord = "";
                 word = word.substr(1);
+            }*/
+
+            if (word.find("would") != std::string::npos || word.find("this") != std::string::npos)
+                std::cout << "Bingo!" << std::endl;
+
+            //Removing leading unreadables
+            if (word[0] == ILLEGAL_CHAR) {
+                curr = 0;
+                currWord = "";
+                word = stripBeginningOfString(word, "" + ILLEGAL_CHAR);
             }
 
-            if (wordList.find(word.substr(0, word.find_first_of(punct))) != wordList.end())
+            //Checking if word is a word, without the punctuation and the unreadables in the end of the first word in it
+            if (word.size() > 0 && wordList.find(stripEndOfWord(word, punct + ILLEGAL_CHAR)) != wordList.end())
             {
                 curr++;
-                currWord += " " + word;
+                currWord += " " + stripEndOfWord(word, "" + ILLEGAL_CHAR);
+            }
+            //Now we know this is might be the first word in the sentence, so we are trying to figure out where does it begin
+            else
+            {
+                curr = 0;
+                currWord = "";
+                /*
+                while (word.size() > 0 && wordList.find(stripEndOfWord(word, punct)) == wordList.end()) 
+                {
+                    word = word.substr(1);
+
+                    word = stripBeginningOfString(word, "" + ILLEGAL_CHAR);
+                }
+
+                if (word.size() != 0)
+                {
+                    curr++;
+                    currWord += " " + word;
+                }*/
             }
 
             if (curr > words)
@@ -138,9 +171,15 @@ public:
                 words = curr;
                 longest = currWord;
             }
+
+            if (word.find(ILLEGAL_CHAR) != std::string::npos) 
+            {
+                curr = 0;
+                currWord = "";
+            }
         }
 
-        return longest;
+        return stripBeginningOfString(stripEndOfString(longest, "" + ILLEGAL_CHAR), "" + ILLEGAL_CHAR);
     }
 
     static std::set<std::string> loadWordList()
@@ -166,5 +205,26 @@ public:
             if(Helper::isReadable(ch))
                 res += ch;
         return res;
+    }
+
+    static std::string stripBeginningOfString(const std::string& word, const std::string& illegal)
+    {
+        if (word.size() && illegal.find(word[0]) != std::string::npos)
+            return word.find_first_not_of(illegal) != std::string::npos ? word.substr(word.find_first_not_of(illegal)) : "";
+        return word;
+    }
+
+    static std::string stripEndOfString(const std::string& word, const std::string& illegal)
+    {
+        if (word.size() && illegal.find(word[word.size() - 1]) != std::string::npos)
+            return word.find_last_not_of(illegal) != std::string::npos ? word.substr(0, word.find_last_not_of(illegal) + 1) : "";
+        return word;
+    }
+
+    static std::string stripEndOfWord(const std::string& word, const std::string& illegal)
+    {
+        if (word.size() && word.find(illegal) != std::string::npos)
+            return word.substr(0, word.find_first_of(illegal));
+        return word;
     }
 };

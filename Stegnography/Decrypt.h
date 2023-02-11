@@ -4,7 +4,7 @@
 #include <Vector>
 #include <Set>
 
-#define BITS_CHECKED 3
+#define BITS_CHECKED 2
 
 
 class ParsedImage;

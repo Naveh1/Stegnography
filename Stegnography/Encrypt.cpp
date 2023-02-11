@@ -15,7 +15,7 @@ void Encrypt::encrypt(ParsedImage& img, const std::string& msg, const int hideBy
 	int row = 0, col = 0;
 	int tmp = 0;
 	int byte = 0;
-	unsigned char imgByte, msgByte;
+	unsigned char imgByte = '\0', msgByte = '\0';
 
 	auto bits = Helper::msg_to_bits(msg);
 
