@@ -191,6 +191,8 @@ public:
 
         for (auto& word : words)
         {
+            if (word.second == "choose...")
+                std::cout << "Bingo!" << std::endl;
             currWord = "";
 
             if (word.second == " ")
@@ -257,7 +259,7 @@ public:
                 i++;
             }
 
-            while (stripEndOfWord(word, punct).size() > 0 && wordList.find(stripEndOfWord(word, punct)) == wordList.end())
+            while (stripEndOfWord(word, punct).size() > 0 && wordList.count(stripEndOfWord(word, punct)) != 1)
             {
                 j++;
                 word = word.substr(1);
@@ -297,21 +299,21 @@ public:
 
     static std::string stripBeginningOfString(const std::string& word, const std::string& illegal)
     {
-        if (word.size() && illegal.find(word[0]) != std::string::npos)
+        if (word.size() && illegal.find_first_not_of(word[0]) != std::string::npos)
             return word.find_first_not_of(illegal) != std::string::npos ? word.substr(word.find_first_not_of(illegal)) : "";
         return word;
     }
 
     static std::string stripEndOfString(const std::string& word, const std::string& illegal)
     {
-        if (word.size() && illegal.find(word[word.size() - 1]) != std::string::npos)
+        if (word.size() && illegal.find_last_not_of(word[word.size() - 1]) != std::string::npos)
             return word.find_last_not_of(illegal) != std::string::npos ? word.substr(0, word.find_last_not_of(illegal) + 1) : "";
         return word;
     }
 
     static std::string stripEndOfWord(const std::string& word, const std::string& illegal)
     {
-        if (word.size() && word.find(illegal) != std::string::npos)
+        if (word.size() && word.find_first_of(illegal) != std::string::npos)
             return word.substr(0, word.find_first_of(illegal));
         return word;
     }
