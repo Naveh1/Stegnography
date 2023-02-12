@@ -191,8 +191,6 @@ public:
 
         for (auto& word : words)
         {
-            if (word.second == "choose...")
-                std::cout << "Bingo!" << std::endl;
             currWord = "";
 
             if (word.second == " ")
@@ -206,8 +204,11 @@ public:
                 currWord += temp;
                 next += temp.size();
 
-                if (words.count(next) && words.at(next++) != " ")
+                if (words.count(next) && words.at(next) != " ")
                     break;
+
+                next++;
+                
                 currWord += ' ';
             }
 
@@ -218,7 +219,8 @@ public:
         return longestWord;
     }
 
-    static std::map<int, std::string> findAllWords(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList, std::map<int, std::string>& words)
+    static std::map<int, std::string> findAllWords(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList,
+        std::map<int, std::string>& words, const int offset)
     {
         int i = 0, j = 0;
         int curr = 0;
@@ -256,17 +258,24 @@ public:
                 }
                 else
                     word += tmp;
+
+                if (word == "solve")
+                    std::cout << "";
                 i++;
             }
+
+            if (tmp == ILLEGAL_CHAR)
+                i++;
 
             while (stripEndOfWord(word, punct).size() > 0 && wordList.count(stripEndOfWord(word, punct)) != 1)
             {
                 j++;
                 word = word.substr(1);
             }
-
+            
             if (stripEndOfWord(word, punct).size() > 0)
-                words[j] = (words.count(j) && words.at(j).size() > word.size()) ? words.at(j) : word;
+                words[j] = (words.count(j) && 
+                    words.at(j).size() > word.size()) ? words.at(j) : word;
         }
 
         return words;
