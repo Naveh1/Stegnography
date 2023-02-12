@@ -71,6 +71,9 @@ public:
             if (word.second == " ")
                 continue;
 
+            if (word.second == "would")
+                std::cout << "..." << std::endl;
+
             next = word.first;
 
             while (words.count(next)) 
@@ -87,6 +90,9 @@ public:
                 
                 currWord += ' ';
             }
+
+            if (currWord.size() > 5)
+                std::cout << "";
 
             if (currWord.size() > longestWord.size())
                 longestWord = currWord;
@@ -128,6 +134,8 @@ public:
 
             while (!ss.eof() && (tmp = ss.get()) != ILLEGAL_CHAR)
             {
+                if (i == 96703 && tmp == 'W')
+                    std::cout << "." << std::endl;
                 if (tmp == ' ') {
                     words[i] = (words.count(i) && words.at(i).size() > 1) ? words.at(i) : " ";
                     i++;
