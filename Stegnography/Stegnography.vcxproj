@@ -24,6 +24,7 @@
     <ProjectGuid>{5c145d06-6cab-4a0f-bdd0-0fa8203f6a5d}</ProjectGuid>
     <RootNamespace>Stegnography</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Steganography</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -170,7 +171,7 @@
     <ClCompile Include="Decrypt.cpp" />
     <ClCompile Include="Encrypt.cpp" />
     <ClCompile Include="ImageHelper.cpp" />
-    <ClCompile Include="Stegnography.cpp" />
+    <ClCompile Include="Steganography.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Decrypt.h" />

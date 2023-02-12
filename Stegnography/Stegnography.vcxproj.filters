@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Stegnography.cpp">
+    <ClCompile Include="Steganography.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageHelper.cpp">
