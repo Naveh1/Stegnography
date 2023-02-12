@@ -53,134 +53,9 @@ public:
         return bits;
     }
 
-
-
     static bool isReadable(const unsigned char ch)
     {
         return ch <= MAX_READABLE;
-    }
-
-    static int gradeMessage(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList)
-    {
-        return getLongestSentence(msg, wordList).size();
-
-        //Ignore the rest
-        unsigned int grade = 0;
-        std::string word, pWord, tmp;
-
-        std::stringstream ss;
-        ss.str(std::string(msg.begin(), msg.end()));
-
-        while (!ss.eof())
-        {
-            word = "";
-            ss >> pWord;
-            if (pWord.empty())
-                continue;
-
-            for (const char ch : pWord)
-            {
-                if (isReadable(ch))
-                    word += ch;
-                else
-                    break;
-            }
-
-            if (word.size() > 0 && word.find_first_of(PUNCTUATION) != std::string::npos
-                && wordList.find(tmp = std::string(word, word.find_first_of(PUNCTUATION), word.find_last_of(PUNCTUATION))) != wordList.end())
-            {
-                grade += tmp.size() * tmp.size();     //Grade is proportional to the word size
-                std::cout << tmp << std::endl;
-            }
-        }
-
-        return grade;
-    }
-
-
-    static std::string getLongestSentence(const std::vector<unsigned char>& msg, const std::set<std::string>& wordList)
-    {
-        int words = 0, curr = 0;
-        std::string longest, currWord;
-        std::string word;
-        std::string punct = ALLOWED_PUNCT;
-
-        std::stringstream ss;
-        const char ILLEGAL_CHAR = '\n';
-
-
-
-        for (const unsigned char& a : msg)
-        {
-            if (isalpha(a))
-                ss << (char)tolower(a);
-            else if (punct.find(a) != std::string::npos)
-                ss << a;
-            else
-                ss << ILLEGAL_CHAR;
-        }
-
-
-        while (ss >> word) 
-        {
-            //Removing leading junk incase its the first word in the sentence
-            /*while (word.size() > 0 && !isalpha(word[0]))
-            {
-                curr = 0;
-                currWord = "";
-                word = word.substr(1);
-            }*/
-
-            if (word.find("would") != std::string::npos || word.find("this") != std::string::npos)
-                std::cout << "Bingo!" << std::endl;
-
-            //Removing leading unreadables
-            if (word[0] == ILLEGAL_CHAR) {
-                curr = 0;
-                currWord = "";
-                word = stripBeginningOfString(word, "" + ILLEGAL_CHAR);
-            }
-
-            //Checking if word is a word, without the punctuation and the unreadables in the end of the first word in it
-            if (word.size() > 0 && wordList.find(stripEndOfWord(word, punct + ILLEGAL_CHAR)) != wordList.end())
-            {
-                curr++;
-                currWord += " " + stripEndOfWord(word, "" + ILLEGAL_CHAR);
-            }
-            //Now we know this is might be the first word in the sentence, so we are trying to figure out where does it begin
-            else
-            {
-                curr = 0;
-                currWord = "";
-                /*
-                while (word.size() > 0 && wordList.find(stripEndOfWord(word, punct)) == wordList.end()) 
-                {
-                    word = word.substr(1);
-
-                    word = stripBeginningOfString(word, "" + ILLEGAL_CHAR);
-                }
-
-                if (word.size() != 0)
-                {
-                    curr++;
-                    currWord += " " + word;
-                }*/
-            }
-
-            if (curr > words)
-            {
-                words = curr;
-                longest = currWord;
-            }
-
-            if (word.find(ILLEGAL_CHAR) != std::string::npos) 
-            {
-                curr = 0;
-                currWord = "";
-            }
-        }
-
-        return stripBeginningOfString(stripEndOfString(longest, "" + ILLEGAL_CHAR), "" + ILLEGAL_CHAR);
     }
 
     static std::string getLongestSentence(const std::map<int, std::string>& words)
@@ -196,6 +71,9 @@ public:
             if (word.second == " ")
                 continue;
 
+            if (word.second == "would")
+                std::cout << "..." << std::endl;
+
             next = word.first;
 
             while (words.count(next)) 
@@ -204,13 +82,17 @@ public:
                 currWord += temp;
                 next += temp.size();
 
-                if (words.count(next) && words.at(next) != " ")
+                //Checking if space
+                if (!words.count(next))
                     break;
 
                 next++;
                 
                 currWord += ' ';
             }
+
+            if (currWord.size() > 5)
+                std::cout << "";
 
             if (currWord.size() > longestWord.size())
                 longestWord = currWord;
@@ -236,7 +118,8 @@ public:
         for (const unsigned char& a : msg)
         {
             if (isalpha(a))
-                ss << (char)tolower(a);
+                ss << a;
+                //ss << (char)tolower(a);
             else if (punct.find(a) != std::string::npos)
                 ss << a;
             else
@@ -258,16 +141,13 @@ public:
                 }
                 else
                     word += tmp;
-
-                if (word == "solve")
-                    std::cout << "";
                 i++;
             }
 
             if (tmp == ILLEGAL_CHAR)
                 i++;
 
-            while (stripEndOfWord(word, punct).size() > 0 && wordList.count(stripEndOfWord(word, punct)) != 1)
+            while (stripEndOfWord(word, punct).size() > 0 && wordList.count(lower(stripEndOfWord(word, punct))) != 1)
             {
                 j++;
                 word = word.substr(1);
@@ -279,6 +159,17 @@ public:
         }
 
         return words;
+    }
+
+    static std::string lower(const std::string& str)
+    {
+        std::string res = str;
+
+        for(int i = 0; i < res.size(); i++)
+            if(isalpha(res[i]))
+                res[i] = std::tolower(res[i]);
+
+        return res;
     }
 
     static std::set<std::string> loadWordList()
