@@ -112,8 +112,6 @@ int main()
         default:
             std::cout << "Invalid option." << std::endl;
         }
-
-        std::cin.get();
     }
 
     return 0;
