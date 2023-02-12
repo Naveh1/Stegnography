@@ -180,7 +180,7 @@ public:
             std::string curr;
 
             while (std::getline(words, curr))
-                wordList.insert(curr);
+                wordList.insert(lower(curr));
         }
 
         return wordList;
