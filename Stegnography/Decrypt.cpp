@@ -30,42 +30,13 @@ std::vector<bool> Decrypt::decrypt(ParsedImage &img, const int byte)
 }
 
 /*
-std::string Decrypt::findMessage(ParsedImage& img)
-{
-    std::string best;
-    std::vector<bool> noOffset, tmp;
-    std::vector<unsigned char> curr, res;
-    int score = -1, tmpScore = 0;
-
-    std::set<std::string> wordList = Helper::loadWordList();
-
-    for (int i = 0; i < BITS_CHECKED; i++)
-    {
-        noOffset = Decrypt::decrypt(img, i);
-        for (int j = 0; j < BITS_IN_BYTE; j++)
-        {
-            tmp = noOffset;
-            tmp.erase(tmp.begin(), tmp.begin() + j);
-            curr = Helper::bits_to_bytes(tmp);
-
-            if ((tmpScore = Helper::gradeMessage(curr, wordList)) > score)
-            {
-                score = tmpScore;
-                //best = std::string(curr.begin(), curr.end());
-                res = std::vector<unsigned char>(curr.begin(), curr.end());
-
-                std::cout << i * BITS_IN_BYTE + j << ": " << Helper::getLongestSentence(curr, wordList) << std::endl;
-            }
-
-            std::cout << "Debug - iteration has ended." << std::endl;
-        }
-    }
-
-    return Helper::getLongestSentence(res, wordList);
-}*/
-
-
-
+* A function to find hidden message in ParsedImage
+* The function iterates over the different offsets and assembling the longest sentence possible from it
+*
+* img: A wrapped image with the secret image
+*
+* Return: The longest message possible
+*/
 std::string Decrypt::findMessage(ParsedImage& img)
 {
     std::string best, curr;
@@ -80,16 +51,19 @@ std::string Decrypt::findMessage(ParsedImage& img)
     
     std::cout << "Beginning decryption..." << std::endl;
     
-
+    //The sentence is beginning at a random index, including in a middle of a byte, so we are trying to check each of the 8 bits
     for (int i = 0; i < BITS_IN_BYTE; i++)
     {
         std::map<int, std::string> words;
+
+        //Each word is in one of BITS_CHECKED least significent bit
         for (int j = 0; j < BITS_CHECKED; j++)
         {
+            //Applying the offset
             tmp = std::vector<bool>(noOffset[j].begin() + i, noOffset[j].end());
             Helper::findAllWords(Helper::bits_to_bytes(tmp), wordList, words, i);
         }
-
+        //Assembling the sentence
         curr = Helper::getLongestSentence(words);
 
         if (curr.size() > best.size())
@@ -97,7 +71,7 @@ std::string Decrypt::findMessage(ParsedImage& img)
 
         std::cout << "Completed iteration " << i << std::endl;
     }
-
+    //Returning the longest sentence found
     return best;
 }
 

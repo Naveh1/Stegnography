@@ -34,14 +34,7 @@ void Encrypt::encrypt(ParsedImage& img, const std::string& msg, const int hideBy
 		}
 
 		imgByte = img[row][col][tmp];
-		//msgByte = msg[i / BITS_IN_BYTE];
-		//byte = i % BITS_IN_BYTE;
 
-		//Get the byte's most significent bit of msgByte - x = (msgByte >> (BITS_IN_BYTE - byte - 1)) & 1	- now using the bits array instead
-		//Clearing hideByte's byte of imgByte - y =  imgByte &= ~(1 << hideByte);
-		//Setting the hideByte's byte of imgByte to x - imgByte = (y | (x << hideByte))
-
-		//img[row][col][tmp] = (imgByte & ~(1 << hideByte)) | (((msgByte >> (BITS_IN_BYTE - byte - 1)) & 1) << hideByte);
 		img[row][col][tmp] = (imgByte & ~(1 << hideByte)) | (bits[i] << hideByte);		// imgByteWithoutBit | MessageByteWithOnlyBit
 	}
 }

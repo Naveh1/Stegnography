@@ -53,17 +53,13 @@ public:
         return bits;
     }
 
-    static bool isReadable(const unsigned char ch)
-    {
-        return ch <= MAX_READABLE;
-    }
-
     static std::string getLongestSentence(const std::map<int, std::string>& words)
     {
         std::string longestWord, currWord;
         std::string temp;
         int next = 0;
 
+        //The sentence can begin at any word, we are trying to find the longest sentence beginning with word
         for (auto& word : words)
         {
             currWord = "";
@@ -108,7 +104,7 @@ public:
         std::stringstream ss;
         const char ILLEGAL_CHAR = '\n';
 
-
+        //Converting the input into stringstream in a format which is more comfortable to use
         for (const unsigned char& a : msg)
         {
             if (isalpha(a))
@@ -120,12 +116,13 @@ public:
                 ss << ILLEGAL_CHAR;
         }
 
-
+        //Now we are trying to start a word in the current index (i)
         while (!ss.eof())
         {
             j = i;
             word = ""; 
 
+            //Assebmling the word until we hit illegal char or space
             while (!ss.eof() && (tmp = ss.get()) != ILLEGAL_CHAR)
             {
                 if (tmp == ' ') {
@@ -141,6 +138,9 @@ public:
             if (tmp == ILLEGAL_CHAR)
                 i++;
 
+            //If the word isn't in the wordlist, we are not giving up - we are trying to remove the first or last character from it and check if now it is in wordlist
+            //The wordlist is in lowercase
+            //We are not checkinf if the punctuation is in the word list
             while (stripEndOfWord(word, punct).size() > 0 && wordList.count(lower(stripEndOfWord(word, punct))) != 1)
             {
                 if (stripEndOfWord(word, punct).size() > 1  && wordList.count(lower(stripEndOfWord(word.substr(0, word.size() - 1), punct))) == 1)
@@ -152,6 +152,7 @@ public:
                 }
             }
             
+            //Adding to the map by the beginning index, if it is already caught we will place the longer one
             if (stripEndOfWord(word, punct).size() > 0)
                 words[j] = (words.count(j) && 
                     words.at(j).size() > word.size()) ? words.at(j) : word;
@@ -164,6 +165,7 @@ public:
     {
         std::string res = str;
 
+        //Converting to lower case
         for(int i = 0; i < res.size(); i++)
             if(isalpha(res[i]))
                 res[i] = std::tolower(res[i]);
@@ -180,34 +182,11 @@ public:
             std::string curr;
 
             while (std::getline(words, curr))
+                //Loading the wordlist in lowercase so it will be easier to search in it
                 wordList.insert(lower(curr));
         }
 
         return wordList;
-    }
-
-    static std::string convertReadable(const std::string& str)
-    {
-        std::string res;
-
-        for (const char ch : str)
-            if(Helper::isReadable(ch))
-                res += ch;
-        return res;
-    }
-
-    static std::string stripBeginningOfString(const std::string& word, const std::string& illegal)
-    {
-        if (word.size() && illegal.find_first_not_of(word[0]) != std::string::npos)
-            return word.find_first_not_of(illegal) != std::string::npos ? word.substr(word.find_first_not_of(illegal)) : "";
-        return word;
-    }
-
-    static std::string stripEndOfString(const std::string& word, const std::string& illegal)
-    {
-        if (word.size() && illegal.find_last_not_of(word[word.size() - 1]) != std::string::npos)
-            return word.find_last_not_of(illegal) != std::string::npos ? word.substr(0, word.find_last_not_of(illegal) + 1) : "";
-        return word;
     }
 
     static std::string stripEndOfWord(const std::string& word, const std::string& illegal)
